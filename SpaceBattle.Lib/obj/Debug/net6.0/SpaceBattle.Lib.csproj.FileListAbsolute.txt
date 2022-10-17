@@ -1,0 +1,12 @@
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.csproj.AssemblyReference.cache
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.GeneratedMSBuildEditorConfig.editorconfig
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.AssemblyInfoInputs.cache
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.AssemblyInfo.cs
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.csproj.CoreCompileInputs.cache
+D:\C#\Space\SpaceBattle.Lib\bin\Debug\net6.0\SpaceBattle.Lib.deps.json
+D:\C#\Space\SpaceBattle.Lib\bin\Debug\net6.0\SpaceBattle.Lib.dll
+D:\C#\Space\SpaceBattle.Lib\bin\Debug\net6.0\SpaceBattle.Lib.pdb
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.dll
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\refint\SpaceBattle.Lib.dll
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\SpaceBattle.Lib.pdb
+D:\C#\Space\SpaceBattle.Lib\obj\Debug\net6.0\ref\SpaceBattle.Lib.dll
