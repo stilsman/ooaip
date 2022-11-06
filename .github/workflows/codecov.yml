@@ -18,13 +18,15 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
 
       - name: Install dependencies
-        run: dotnet restore ./SpaceBattle.Lib
+        run: dotnet restore
       
       - name: Build
-        run: dotnet build ./SpaceBattle.Lib --no-restore
+        run: dotnet build --no-restore
       
       - name: Test
-        run: dotnet test -p:CollectCoverage=true -p:CoverletOutput=../coverage/ -p:CoverletOutputFormat=opencover --no-build --verbosity d ./SpaceBattle.Lib.Test
+        run: dotnet test -p:CollectCoverage=true -p:CoverletOutput=../coverage/ -p:CoverletOutputFormat=opencover --no-build --verbosity d
       
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage.opencover.xml
