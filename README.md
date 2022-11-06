@@ -1,1 +1,1 @@
-[![codecov](https://codecov.io/gh/stilsman/ooaip/branch/testcom/graph/badge.svg?token=LVGDOBM1R5)](https://codecov.io/gh/stilsman/ooaip)
+[![codecov](https://codecov.io/gh/stilsman/ooaip/branch/task1/graph/badge.svg?token=LVGDOBM1R5)](https://codecov.io/gh/stilsman/ooaip)
