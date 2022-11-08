@@ -42,7 +42,7 @@ public class VecTests
     {
         Vector v1 = new Vector(1, 0,0);
         Vector v2 = new Vector(1, 1);
-        Assert.Throws<ArgumentException>(() => v1 + v2);
+        Assert.Throws<ArgumentException>(() => v1 - v2);
     }
 
     [Fact]
@@ -55,6 +55,8 @@ public class VecTests
         v2+=v1;
         Assert.False(v1==v2);
 
+        Vector v3 = new Vector(1, 0,0);
+        Assert.False(v1==v3);
     }
     [Fact]
     public void nonEquality()
