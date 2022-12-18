@@ -9,9 +9,8 @@ public class Vector{
         vec = args;
     }
     public int this[int i]{
-        get {
-            return vec[i];
-        }
+        get { return vec[i]; } 
+        set { vec[i] = value; }
 
     }
     public static Vector operator + (Vector v1, Vector v2){
@@ -35,12 +34,12 @@ public class Vector{
         }
     }
 
-    public static Vector operator * (int n, Vector v){
-        int[] sum = new int[v.size];
-            for (int i = 0; i < v.size; i++)
-                sum[i] = v[i] * n;
-            return new Vector(sum);
-    }
+    // public static Vector operator * (int n, Vector v){
+    //     int[] sum = new int[v.size];
+    //         for (int i = 0; i < v.size; i++)
+    //             sum[i] = v[i] * n;
+    //         return new Vector(sum);
+    // }
 
     public static bool operator == (Vector v1, Vector v2){
         if (v1.size != v2.size)
@@ -83,14 +82,18 @@ public class Vector{
     // }
 
 
-    public override bool Equals(object? obj) => obj is Vector v && vec.SequenceEqual(v.vec);
-    // public override bool Equals(object? obj) 
-    // { 
-    //     if (ReferenceEquals(obj, null)) return false;
-    //     if (ReferenceEquals(this, obj)) return true;
-    //     throw new NotImplementedException();
-    // }
-    public override int GetHashCode() {return HashCode.Combine(vec);}
+    public override bool Equals(object? obj){
+        return obj is Vector v && vec.SequenceEqual(v.vec);
+    }
+
+    public override int GetHashCode() {
+        HashCode hash = new();
+        foreach(int i in vec){
+            hash.Add(vec[i]);
+        }
+        return hash.ToHashCode();
+
+    }
 
 }
 

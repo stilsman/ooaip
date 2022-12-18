@@ -18,7 +18,6 @@ public class MoveCommand : ICommand
     }
     public void Execute() 
     {
-        //throw new NotImplementedException();
         movableobj.position += movableobj.velocity;
     }
 }
