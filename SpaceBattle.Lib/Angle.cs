@@ -5,7 +5,7 @@ public class Angle
     public int numerator { get; set; }
     public int denominator { get; set; }
 
-    public Angle(int numerator, int denominator)
+    protected Angle(int numerator, int denominator)
     {
         if (denominator == 0)
         {
