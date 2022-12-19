@@ -91,6 +91,4 @@ public class VecTests
         
         Assert.Equal(v1.GetHashCode(),v2.GetHashCode());
     }
-
-    
 }
