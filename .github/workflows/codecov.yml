@@ -1,6 +1,6 @@
-name: dotnet package1
+name: dotnet package
  
-on: [workflow_dispatch]
+on: [pull_request, workflow_dispatch]
   
 jobs:
   build:
