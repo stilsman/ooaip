@@ -2,27 +2,12 @@ name: dotnet package
  
 on:
   pull_request:
-    branches:
-      - main
+    branches: [ "master" ]
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
-
+  
 
   
-jobs:
-  printInputs:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "Log level: ${{ github.event.inputs.logLevel }}"
-        echo "Tags: ${{ github.event.inputs.tags }}"
-        
+jobs:      
   build:
  
     runs-on: ubuntu-latest
