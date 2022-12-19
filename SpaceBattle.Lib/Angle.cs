@@ -16,16 +16,7 @@ public class Angle
         this.numerator = numerator / lcd;
         this.denominator = denominator / lcd;
     }
-    private static int LCD(int x,int y)
-    {
-        while (x != y){
-            if (x > y) 
-                x -= y;
-            else
-                y -= x;
-        }
-        return x;
-    }
+
     
 
     public override string ToString()
@@ -57,3 +48,14 @@ public class Angle
         return (this.ToString()).GetHashCode();
     }
 }
+
+    static int LCD(int x,int y)
+    {
+        while (x != y){
+            if (x > y) 
+                x -= y;
+            else
+                y -= x;
+        }
+        return x;
+    }
