@@ -1,7 +1,7 @@
 name: dotnet package
  
-on: [push]
- 
+on: [pull_request, workflow_dispatch]
+  
 jobs:
   build:
  
