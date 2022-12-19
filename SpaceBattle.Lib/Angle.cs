@@ -1,4 +1,4 @@
-namespace SpaceBattle.Lib;
+namespace SpaceBattle.Lib{
 
 public class Angle
 {
@@ -59,3 +59,4 @@ public class Angle
         }
         return x;
     }
+}
