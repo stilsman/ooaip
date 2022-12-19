@@ -1,6 +1,6 @@
 using System;
 
-namespace SpaceBattle.Lib{
+namespace SpaceBattle.Lib
  
 public interface IMovable 
 {
@@ -20,5 +20,5 @@ public class MoveCommand : ICommand
     {
         movableobj.position += movableobj.velocity;
     }
-}
+
 }
