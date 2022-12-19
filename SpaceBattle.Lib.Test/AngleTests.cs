@@ -87,6 +87,4 @@ public class AngleTest
     Angle b = new Angle(90, 2);
     Assert.True(a == b);
     } 
-
-
 }
