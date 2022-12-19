@@ -1,5 +1,5 @@
 using System;
-namespace SpaceBattle.Lib
+namespace SpaceBattle.Lib;
 
 public class Vector{
     public int[] vec;
