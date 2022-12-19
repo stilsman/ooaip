@@ -5,7 +5,7 @@ public class Angle
     public int numerator { get; set; }
     public int denominator { get; set; }
 
-    protected Angle(int numerator, int denominator)
+    public Angle(int numerator, int denominator)
     {
         if (denominator == 0)
         {
@@ -17,7 +17,7 @@ public class Angle
         this.denominator = denominator / lcd;
     }
 
-    public static int LCD(int x,int y)
+    protected static int LCD(int x,int y)
     {
         while (x != y){
             if (x > y) 
