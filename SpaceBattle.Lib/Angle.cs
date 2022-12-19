@@ -1,4 +1,4 @@
-namespace SpaceBattle.Lib{
+namespace SpaceBattle.Lib
 
 public class Angle
 {
@@ -17,7 +17,16 @@ public class Angle
         this.denominator = denominator / lcd;
     }
 
-    
+    private static int LCD(int x,int y)
+    {
+        while (x != y){
+            if (x > y) 
+                x -= y;
+            else
+                y -= x;
+        }
+        return x;
+    }
 
     public override string ToString()
     {
@@ -43,20 +52,11 @@ public class Angle
     public override bool Equals(object? obj) {
         return obj is Angle a && this.numerator == a.numerator && this.denominator == a.denominator;
     }
-
+    
     public override int GetHashCode() {
         return (this.ToString()).GetHashCode();
     }
 }
 
-    static int LCD(int x,int y)
-    {
-        while (x != y){
-            if (x > y) 
-                x -= y;
-            else
-                y -= x;
-        }
-        return x;
-    }
-}
+
+
