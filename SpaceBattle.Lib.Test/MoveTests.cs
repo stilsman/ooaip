@@ -18,7 +18,6 @@ public class MoveCommandTests
         move.Execute();
 
         movableMock.VerifySet(m=>m.position = new Vector(2,4));
-        //Assert.Equal(new Vector(2, 4), movableMock.Object.position);
     }
     [Fact]
     public void NegGetPos()
@@ -52,6 +51,4 @@ public class MoveCommandTests
 
         Assert.Throws<Exception>(() => move.Execute());
     }
-
 }
-
