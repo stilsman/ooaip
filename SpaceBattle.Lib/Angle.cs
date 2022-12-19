@@ -16,7 +16,7 @@ public class Angle
         this.numerator = numerator / lcd;
         this.denominator = denominator / lcd;
     }
-    public static int LCD(int x,int y)
+    private static int LCD(int x,int y)
     {
         while (x != y){
             if (x > y) 
