@@ -59,5 +59,4 @@ public class Vector{
         return hash.ToHashCode();
 
     }
-
 }
