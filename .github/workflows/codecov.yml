@@ -1,4 +1,4 @@
-name: dotnet package
+name: dotnet package1
  
 on: [workflow_dispatch]
   
