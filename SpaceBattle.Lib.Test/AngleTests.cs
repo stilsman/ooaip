@@ -56,12 +56,6 @@ public class AngleTest
         Assert.Equal(a.GetHashCode(),b.GetHashCode());
     }
 
-    [Fact]
-    public void LCD()
-    {
-        int nod = Angle.LCD(20, 25);
-        Assert.Equal(5, nod);
-    }
 
 
     [Fact]
