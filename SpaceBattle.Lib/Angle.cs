@@ -1,4 +1,4 @@
-namespace SpaceBattle.Lib
+namespace SpaceBattle.Lib;
 
 public class Angle
 {
@@ -17,7 +17,7 @@ public class Angle
         this.denominator = denominator / lcd;
     }
 
-    private static int LCD(int x,int y)
+    public static int LCD(int x,int y)
     {
         while (x != y){
             if (x > y) 
