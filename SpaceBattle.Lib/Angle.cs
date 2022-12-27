@@ -12,15 +12,16 @@ public class Angle
             throw new Exception("ZeroDenominator");
         }
 
-        int lcd = LCD(numerator,denominator);
+        int lcd = LCD(numerator, denominator);
         this.numerator = numerator / lcd;
         this.denominator = denominator / lcd;
     }
 
-    private static int LCD(int x,int y)
+    private static int LCD(int x, int y)
     {
-        while (x != y){
-            if (x > y) 
+        while (x != y)
+        {
+            if (x > y)
                 x -= y;
             else
                 y -= x;
@@ -38,22 +39,26 @@ public class Angle
         int num = a.numerator * b.denominator + b.numerator * a.denominator;
         int den = a.denominator * b.denominator;
         int nod = LCD(num, den);
-        return new Angle(num/nod , den/nod);
+        return new Angle(num / nod, den / nod);
     }
 
-    public static bool operator ==(Angle a, Angle b) {
+    public static bool operator ==(Angle a, Angle b)
+    {
         return (a.numerator == b.numerator) && (a.denominator == b.denominator);
     }
 
-    public static bool operator !=(Angle a, Angle b) {
+    public static bool operator !=(Angle a, Angle b)
+    {
         return !(a == b);
-    } 
+    }
 
-    public override bool Equals(object? obj) {
+    public override bool Equals(object? obj)
+    {
         return obj is Angle a && this.numerator == a.numerator && this.denominator == a.denominator;
     }
-    
-    public override int GetHashCode() {
+
+    public override int GetHashCode()
+    {
         return (this.ToString()).GetHashCode();
     }
 }
