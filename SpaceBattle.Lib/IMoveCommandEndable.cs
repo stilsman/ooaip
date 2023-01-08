@@ -1,6 +1,6 @@
 namespace SpaceBattle.Lib;
 
-public interface MoveCommandEndable
+public interface IMoveCommandEndable
 {
     ICommand command { get; }
     IUObject obj { get; }

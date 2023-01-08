@@ -1,32 +1,24 @@
 namespace SpaceBattle.Lib;
 using Hwdtech;
 
-
 public class EndMoveCommand : ICommand
 {
-    MoveCommandEndable command;
-    public EndMoveCommand(MoveCommandEndable com)
+    IMoveCommandEndable command;
+    public EndMoveCommand(IMoveCommandEndable com)
     {
         command = com;
     }
     public void Execute()
     {
-
-        Hwdtech.IoC.Resolve<ICommand>(
+        IoC.Resolve<ICommand>(
             "Game.Commands.DeleteProperty",
             command.obj,
             command.obj.GetProperty("Move")
         ).Execute();
 
-        Hwdtech.IoC.Resolve<ICommand>(
-            "Game.Queue.Enqeue",
-            Hwdtech.IoC.Resolve<IInjectable>(
-                "Game.Inject.Empty",
-                command.obj,
-                command.command
-            ).Inject()
-        );
-
-
+        IoC.Resolve<IInjectable>(
+            "Game.Commands.SetupProperty",
+            command.obj
+        ).Inject(IoC.Resolve<ICommand>("Game.Commands.Empty"));
     }
 }

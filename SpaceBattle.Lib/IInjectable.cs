@@ -1,5 +1,5 @@
 namespace SpaceBattle.Lib;
 public interface IInjectable
 {
-    public ICommand Inject();
+    public void Inject(ICommand obj);
 }
