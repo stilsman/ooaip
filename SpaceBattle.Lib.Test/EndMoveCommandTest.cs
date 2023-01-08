@@ -36,6 +36,7 @@ public class EndMoveCommandTest
         var mockEndable = new Mock<IMoveCommandEndable>();
         var mockUObject = new Mock<IUObject>();
         mockEndable.SetupGet(x => x.obj).Returns(mockUObject.Object).Verifiable();
+        
         ICommand EndMoveCommand = new EndMoveCommand(mockEndable.Object);
 
         EndMoveCommand.Execute();
