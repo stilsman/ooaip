@@ -61,7 +61,6 @@ public class EndMoveCommandTest
         ICommand EndMoveCommandComException = new EndMoveCommand(mockEndable.Object);
         Assert.Throws<Exception>(() => EndMoveCommandComException.Execute());
 
-
         mockEndable.SetupGet(x => x.command).Returns(mockCommand.Object);
         mockEndable.SetupGet(x => x.queue).Throws<Exception>();
         ICommand EndMoveCommandQueException = new EndMoveCommand(mockEndable.Object);
