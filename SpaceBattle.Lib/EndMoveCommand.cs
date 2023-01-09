@@ -16,9 +16,12 @@ public class EndMoveCommand : ICommand
             command.obj.GetProperty("Move")
         ).Execute();
 
-        IoC.Resolve<IInjectable>(
-            "Game.Commands.SetupProperty",
-            command.obj
-        ).Inject(IoC.Resolve<ICommand>("Game.Commands.Empty"));
+        IoC.Resolve<ICommand>(
+            "Game.Commands.Inject",
+            command.command,
+            command.queue,
+            IoC.Resolve<ICommand>("Game.Commands.Empty")
+        ).Execute();
+
     }
 }
