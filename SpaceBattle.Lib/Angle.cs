@@ -12,21 +12,14 @@ public class Angle
             throw new Exception("ZeroDenominator");
         }
 
-        int lcd = LCD(numerator, denominator);
-        this.numerator = numerator / lcd;
-        this.denominator = denominator / lcd;
+        int gcd = GCD(numerator, denominator);
+        this.numerator = numerator / gcd;
+        this.denominator = denominator / gcd;
     }
 
-    private static int LCD(int x, int y)
+    private static int GCD(int a, int b)
     {
-        while (x != y)
-        {
-            if (x > y)
-                x -= y;
-            else
-                y -= x;
-        }
-        return x;
+        return b == 0 ? a : GCD(b, a % b);
     }
 
     public override string ToString()
@@ -38,7 +31,7 @@ public class Angle
     {
         int num = a.numerator * b.denominator + b.numerator * a.denominator;
         int den = a.denominator * b.denominator;
-        int nod = LCD(num, den);
+        int nod = GCD(num, den);
         return new Angle(num / nod, den / nod);
     }
 
