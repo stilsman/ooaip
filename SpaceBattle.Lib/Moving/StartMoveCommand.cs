@@ -1,22 +1,21 @@
-using System;
 using Hwdtech;
 
-namespace SpaceBattle.Lib {
-    public class StartMoveCommand : ICommand {
-        private IMoveCommandStartable _commandStartable;
+namespace SpaceBattle.Lib;
 
-        public StartMoveCommand(IMoveCommandStartable commandStartable) {
-            _commandStartable = commandStartable;
-        }
+public class StartMoveCommand : ICommand
+{
+    IMoveCommandStartable installator { get; }
 
-        public void Execute() {
-            var _uobject = _commandStartable.uobject;
-            var _command = _commandStartable.command;
-            var _properties = _commandStartable.properties;
+    public StartMoveCommand(IMoveCommandStartable UObject)
+    {
+        installator = UObject;
+    }
 
-            IoC.Resolve<Hwdtech.ICommand>("Game.Object.SetProperties", _uobject, _properties).Execute();
-            var command = IoC.Resolve<Hwdtech.ICommand>("Game.Operations.Command", _command);
-            IoC.Resolve<Hwdtech.ICommand>("Game.Queue.Push", command).Execute();
-        }
+    public void Execute()
+    {
+        installator.action.ToList().ForEach(o => IoC.Resolve<ICommand>("General.SetProperty", installator.UObject, o.Key, o.Value).Execute());
+        ICommand MCommand = IoC.Resolve<ICommand>("Command.Move", installator.UObject);
+        IoC.Resolve<ICommand>("General.SetProperty", installator.UObject, "Commands.Movement", MCommand).Execute();
+        IoC.Resolve<ICommand>("Queue.Push", MCommand).Execute();
     }
 }

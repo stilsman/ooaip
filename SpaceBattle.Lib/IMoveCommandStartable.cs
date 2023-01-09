@@ -1,9 +1,11 @@
-using System;
+namespace SpaceBattle.Lib;
 
-namespace SpaceBattle.Lib {
-    public interface IMoveCommandStartable {
-        public IUObject uobject { get; }
-        public ICommand command { get; }
-        public IList <string> properties { get; }
+public interface IMoveCommandStartable
+{
+    IUObject UObject { get; }
+
+    IDictionary<string, object> action
+    {
+        get;
     }
 }
