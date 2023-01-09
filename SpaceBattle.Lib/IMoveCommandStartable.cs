@@ -4,7 +4,7 @@ public interface IMoveCommandStartable
 {
     IUObject UObject { get; }
 
-    IDictionary<string, object> action
+    IDictionary<string, object> dict
     {
         get;
     }

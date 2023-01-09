@@ -17,7 +17,7 @@ public class StartMoveCommandTest
         mockCommand.Setup(a => a.Execute());
         var regStrategy = new Mock<IStrategy>();
         regStrategy.Setup(_s => _s.Execute(It.IsAny<object[]>())).Returns(mockCommand.Object);
-
+    
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "General.SetProperty", (object[] args) => regStrategy.Object.Execute(args)).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Command.Move", (object[] args) => regStrategy.Object.Execute(args)).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Queue.Push", (object[] args) => regStrategy.Object.Execute(args)).Execute();
@@ -28,7 +28,7 @@ public class StartMoveCommandTest
     {
         var m = new Mock<IMoveCommandStartable>();
         m.SetupGet(a => a.UObject).Returns(new Mock<IUObject>().Object).Verifiable();
-        m.SetupGet(a => a.action).Returns(new Dictionary<string, object>() { { "speed", new Vector(It.IsAny<int>(), It.IsAny<int>()) } }).Verifiable();
+        m.SetupGet(a => a.dict).Returns(new Dictionary<string, object>() { { "speed", new Vector(It.IsAny<int>(), It.IsAny<int>()) } }).Verifiable();
         ICommand startMoveCommand = new StartMoveCommand(m.Object);
         startMoveCommand.Execute();
         m.Verify();
@@ -38,7 +38,7 @@ public class StartMoveCommandTest
     {
         var m = new Mock<IMoveCommandStartable>();
         m.SetupGet(a => a.UObject).Throws<Exception>().Verifiable();
-        m.SetupGet(a => a.action).Returns(new Dictionary<string, object>() { { "speed", new Vector(It.IsAny<int>(), It.IsAny<int>()) } }).Verifiable();
+        m.SetupGet(a => a.dict).Returns(new Dictionary<string, object>() { { "speed", new Vector(It.IsAny<int>(), It.IsAny<int>()) } }).Verifiable();
         ICommand startMoveCommand = new StartMoveCommand(m.Object);
         Assert.Throws<Exception>(() => startMoveCommand.Execute());
     }
@@ -47,7 +47,7 @@ public class StartMoveCommandTest
     {
         var m = new Mock<IMoveCommandStartable>();
         m.SetupGet(a => a.UObject).Returns(new Mock<IUObject>().Object).Verifiable();
-        m.SetupGet(a => a.action).Throws<Exception>().Verifiable();
+        m.SetupGet(a => a.dict).Throws<Exception>().Verifiable();
         ICommand startMoveCommand = new StartMoveCommand(m.Object);
         Assert.Throws<Exception>(() => startMoveCommand.Execute());
     }
