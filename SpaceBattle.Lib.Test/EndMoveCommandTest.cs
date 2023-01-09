@@ -22,7 +22,7 @@ public class EndMoveCommandTest
         var mockStrategyInject = new Mock<IStrategy>();
         mockStrategyInject.Setup(x => x.RunStrategy(It.IsAny<object[]>())).Returns(mockCommand.Object);
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => mockStrategyInject.Object.RunStrategy(args)).Execute();
-        
+
         var mockStrategyEmpty = new Mock<IStrategy>();
         mockStrategyEmpty.Setup(x => x.RunStrategy()).Returns(mockCommand.Object);
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Empty", (object[] args) => mockStrategyEmpty.Object.RunStrategy(args)).Execute();
@@ -45,7 +45,7 @@ public class EndMoveCommandTest
         mockEndable.VerifyAll();
     }
 
-     [Fact]
+    [Fact]
     public void EndMoveCommandNeg()
     {
         var mockEndable = new Mock<IMoveCommandEndable>();
@@ -67,7 +67,4 @@ public class EndMoveCommandTest
         ICommand EndMoveCommandQueException = new EndMoveCommand(mockEndable.Object);
         Assert.Throws<Exception>(() => EndMoveCommandQueException.Execute());
     }
-
-
-
 }
