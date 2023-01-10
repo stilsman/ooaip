@@ -4,7 +4,7 @@ namespace SpaceBattle.Lib;
 
 public class StartMoveCommand : ICommand
 {
-    private IMoveCommandStartable obj
+    private IMoveCommandStartable obj;
 
     public StartMoveCommand(IMoveCommandStartable stc)
     {
