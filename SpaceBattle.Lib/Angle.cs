@@ -12,20 +12,14 @@ public class Angle
             throw new Exception("ZeroDenominator");
         }
 
-        int lcd = LCD(numerator,denominator);
-        this.numerator = numerator / lcd;
-        this.denominator = denominator / lcd;
+        int gcd = GCD(numerator, denominator);
+        this.numerator = numerator / gcd;
+        this.denominator = denominator / gcd;
     }
 
-    private static int LCD(int x,int y)
+    private static int GCD(int a, int b)
     {
-        while (x != y){
-            if (x > y) 
-                x -= y;
-            else
-                y -= x;
-        }
-        return x;
+        return b == 0 ? a : GCD(b, a % b);
     }
 
     public override string ToString()
@@ -37,26 +31,27 @@ public class Angle
     {
         int num = a.numerator * b.denominator + b.numerator * a.denominator;
         int den = a.denominator * b.denominator;
-        int nod = LCD(num, den);
-        return new Angle(num/nod , den/nod);
+        int nod = GCD(num, den);
+        return new Angle(num / nod, den / nod);
     }
 
-    public static bool operator ==(Angle a, Angle b) {
+    public static bool operator ==(Angle a, Angle b)
+    {
         return (a.numerator == b.numerator) && (a.denominator == b.denominator);
     }
 
-    public static bool operator !=(Angle a, Angle b) {
+    public static bool operator !=(Angle a, Angle b)
+    {
         return !(a == b);
-    } 
+    }
 
-    public override bool Equals(object? obj) {
+    public override bool Equals(object? obj)
+    {
         return obj is Angle a && this.numerator == a.numerator && this.denominator == a.denominator;
     }
-    
-    public override int GetHashCode() {
+
+    public override int GetHashCode()
+    {
         return (this.ToString()).GetHashCode();
     }
 }
-
-
-
