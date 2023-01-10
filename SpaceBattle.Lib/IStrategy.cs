@@ -1,3 +1,5 @@
+using System;
+
 namespace SpaceBattle.Lib;
 
 public interface IStrategy

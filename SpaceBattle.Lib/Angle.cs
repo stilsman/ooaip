@@ -55,6 +55,3 @@ public class Angle
         return (this.ToString()).GetHashCode();
     }
 }
-
-
-
