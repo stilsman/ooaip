@@ -13,13 +13,12 @@ public class EndMoveCommand : ICommand
         IoC.Resolve<ICommand>(
             "Game.Commands.DeleteProperty",
             command.obj,
-            command.obj.GetProperty("Move")
+            "Move"
         ).Execute();
 
         IoC.Resolve<ICommand>(
             "Game.Commands.Inject",
             command.command,
-            command.queue,
             IoC.Resolve<ICommand>("Game.Commands.Empty")
         ).Execute();
 
