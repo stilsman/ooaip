@@ -4,11 +4,11 @@ namespace SpaceBattle.Lib;
 
 public class StartMoveCommand : ICommand
 {
-    IMoveCommandStartable obj { get; }
+    private IMoveCommandStartable obj
 
-    public StartMoveCommand(IMoveCommandStartable UObject)
+    public StartMoveCommand(IMoveCommandStartable stc)
     {
-        obj = UObject;
+        obj = stc;
     }
 
     public void Execute()
