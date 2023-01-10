@@ -36,9 +36,7 @@ public class EndMoveCommandTest
         mockEndable.SetupGet(x => x.obj).Returns(mockUObject.Object);
 
         var mockCommand = new Mock<ICommand>();
-        var mockQueue = new Mock<Queue<ICommand>>();
         mockEndable.SetupGet(x => x.command).Returns(mockCommand.Object);
-        mockEndable.SetupGet(x => x.queue).Returns(mockQueue.Object);
 
         ICommand EndMoveCommand = new EndMoveCommand(mockEndable.Object);
         EndMoveCommand.Execute();
@@ -60,10 +58,5 @@ public class EndMoveCommandTest
         mockEndable.SetupGet(x => x.command).Throws<Exception>();
         ICommand EndMoveCommandComException = new EndMoveCommand(mockEndable.Object);
         Assert.Throws<Exception>(() => EndMoveCommandComException.Execute());
-
-        mockEndable.SetupGet(x => x.command).Returns(mockCommand.Object);
-        mockEndable.SetupGet(x => x.queue).Throws<Exception>();
-        ICommand EndMoveCommandQueException = new EndMoveCommand(mockEndable.Object);
-        Assert.Throws<Exception>(() => EndMoveCommandQueException.Execute());
     }
 }
