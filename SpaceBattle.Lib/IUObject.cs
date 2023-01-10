@@ -1,8 +1,8 @@
-using System;
+namespace SpaceBattle.Lib;
 
-namespace SpaceBattle.Lib {
-    public interface IUObject {
-        public void SetProperty(string key, Object property);
-        public Object GetProperty(string key);
-    }
+public interface IUObject
+{
+    void SetProperty(string key, object value);
+    object GetProperty(string key);
+
 }
