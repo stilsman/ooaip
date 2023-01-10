@@ -62,6 +62,4 @@ public class CheckCollisionTest
         var getDifferenceStrategy = new GetDifferenceStrategy();
         Assert.Equal(new List<Vector>{new Vector(-1,-1), new Vector(-1,-1)},getDifferenceStrategy.RunStrategy(obj1.Object, obj2.Object));
     }
-
-
 }
