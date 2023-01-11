@@ -14,9 +14,9 @@ public class SolutionTreeTests
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
     
         var mockStrategyReturnsDict = new Mock<IStrategy>();
-        mockStrategyReturnsDict.Setup(x => x.Execute()).Returns(new Dictionary<int, object>());
+        mockStrategyReturnsDict.Setup(x => x.RunStrategy()).Returns(new Dictionary<int, object>());
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GetSolutionTree", (object[] args) => mockStrategyReturnsDict.Object.Execute(args)).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.GetSolutionTree", (object[] args) => mockStrategyReturnsDict.Object.RunStrategy(args)).Execute();
     }
 
     [Fact]
