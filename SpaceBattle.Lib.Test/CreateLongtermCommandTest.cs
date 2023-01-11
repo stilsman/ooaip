@@ -23,9 +23,9 @@ public class CreateLongtermCommandTest
         mockCreateMacroCommandStrategy.Setup(x => x.RunStrategy(It.IsAny<object[]>())).Returns(mockCommand.Object).Verifiable();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.CreateMacroCommand", (object[] args) => mockCreateMacroCommandStrategy.Object.RunStrategy(args)).Execute();
     
-        var mockInjectStrategy = new Mock<IStrategy>();
+        var mockRepeatStrategy = new Mock<IStrategy>();
         mockInjectStrategy.Setup(x => x.RunStrategy(It.IsAny<object[]>())).Returns(mockCommand.Object).Verifiable();
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => mockInjectStrategy.Object.RunStrategy(args)).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Repeat", (object[] args) => mockRepeatStrategy.Object.RunStrategy(args)).Execute();
         
         var mockQueuePushStrategy = new Mock<IStrategy>();
         mockQueuePushStrategy.Setup(x => x.RunStrategy(It.IsAny<object[]>())).Returns(mockCommand.Object).Verifiable();
