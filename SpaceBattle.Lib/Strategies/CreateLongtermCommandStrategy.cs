@@ -11,7 +11,7 @@ public class CreateLongtermCommandStrategy : IStrategy
 
         var mCommand = IoC.Resolve<ICommand>("Game.CreateMacroCommand", nameOfDependency, obj);
 
-        var inject_command = IoC.Resolve<ICommand>("Game.Commands.Inject", mCommand);
-        return IoC.Resolve<ICommand>("Game.Queue.PushBack", inject_command);
+        var repeat_command = IoC.Resolve<ICommand>("Game.Commands.Repeat", mCommand);
+        return IoC.Resolve<ICommand>("Game.Queue.PushBack", repeat_command);
     }
 }
