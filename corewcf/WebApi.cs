@@ -15,7 +15,7 @@ internal class WebApi : IWebApi
         }
         catch (System.Exception e)
         {
-            System.Console.WriteLine($"\n{e}\n");
+            throw IoC.Resolve<System.Exception>("System Exception", e);
         }
     }
 }
