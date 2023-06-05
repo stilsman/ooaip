@@ -18,7 +18,7 @@ public class HardStopCommand : ICommand
         }
         else
         {
-            throw IoC.Resolve<Exception>("HardStopThreadException");
+            throw IoC.Resolve<Exception>("StopThreadException");
         }
     }
 }

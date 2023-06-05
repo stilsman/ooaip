@@ -36,7 +36,7 @@ public class SoftStopCommandStrategyTests
         {
             var scope = IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root")));
             scope.Execute();
-            //dictSenders.Add("5", new Mock<ISender>().Object);
+            //dictSenders.Add(tId, new Mock<ISender>().Object);
 
 
             var getDictThreadsStrategy = new Mock<IStrategy>();
@@ -75,6 +75,10 @@ public class SoftStopCommandStrategyTests
                 return setSenderCommand.Object;
             });
 
+            var exceptionStrategy = new Mock<IStrategy>();
+            exceptionStrategy.Setup(c => c.RunStrategy(It.IsAny<object[]>())).Returns((object[] args) => new Exception());
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "StopThreadException", (object[] args) => exceptionStrategy.Object.RunStrategy(args)).Execute();
+
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetDict", (object[] args) => getDictThreadsStrategy.Object.RunStrategy(args)).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "SetThread", (object[] args) => setThreadStrategy.Object.RunStrategy(args)).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetThread", (object[] args) => getThreadStrategy.Object.RunStrategy(args)).Execute();
@@ -104,49 +108,88 @@ public class SoftStopCommandStrategyTests
         string tId = "1";
         var cmd1 = new Mock<ICommand>();
         cmd1.Setup(c => c.Execute()).Callback(() => waitHandler.Set()).Verifiable();
-
         IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
         var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
         IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
-
-        var SSCmd = IoC.Resolve<ICommand>("SoftStopThread", tId);
+        var count = 0;
+        var SSCmd = IoC.Resolve<ICommand>("SoftStopThread", tId, () => { count += 1; });
         IoC.Resolve<ICommand>("SendCommand", tId, SSCmd).Execute();
         IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
 
         waitHandler.WaitOne();
-        cmd1.Verify(c => c.Execute(), Times.Once());
-
-        var receiver = IoC.Resolve<IReceiver>("GetReceiver", tId);
-        Assert.True(receiver.isEmpty());
+        var rc = IoC.Resolve<IReceiver>("GetReceiver", tId);
+        Assert.True(rc.isEmpty());
+        Assert.Equal(1, count);
 
     }
 
     [Fact]
     public void HardStopCommandTest()
-{
+    {
+        ManualResetEvent waitHandler = new ManualResetEvent(false);
 
-    ManualResetEvent waitHandler = new ManualResetEvent(false);
+        var cmd1 = new Mock<ICommand>();
+        cmd1.Setup(c => c.Execute()).Verifiable();
+        var cmd2 = new Mock<ICommand>();
+        cmd2.Setup(c => c.Execute()).Verifiable();
+        var cmd3 = new Mock<ICommand>();
+        cmd3.Setup(c => c.Execute()).Verifiable();
 
-    var cmd1 = new Mock<ICommand>();
-    cmd1.Setup(c => c.Execute()).Verifiable();
-    var cmd2 = new Mock<ICommand>();
-    cmd2.Setup(c => c.Execute()).Verifiable();
-    var cmd3 = new Mock<ICommand>();
-    cmd3.Setup(c => c.Execute()).Verifiable();
+        string tId = "2";
+        var count = 0;
+        var act = new Action(() =>
+        {
+            count += 1;
+            waitHandler.Set();
+        });
 
-    string tId = "2";
+        IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
+        var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
+        IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
+        waitHandler.Set();
+        IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
+        IoC.Resolve<ICommand>("SendCommand", tId, cmd2.Object).Execute();
+        IoC.Resolve<ICommand>("HardStopThread", tId, act).Execute();
+        IoC.Resolve<ICommand>("SendCommand", tId, cmd3.Object).Execute();
 
-    IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
-    waitHandler.Set();
-    IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
-    IoC.Resolve<ICommand>("SendCommand", tId, cmd2.Object).Execute();
-    var hs = IoC.Resolve<ICommand>("HardStopThread", tId);
-    IoC.Resolve<ICommand>("SendCommand", tId, hs).Execute();
+        waitHandler.WaitOne(200);
+        cmd3.Verify(c => c.Execute(), Times.Never());
+        Assert.Equal(1, count);
+    }
 
-    IoC.Resolve<ICommand>("SendCommand", tId, cmd3.Object).Execute();
 
-    waitHandler.WaitOne(200);
+    [Fact]
+    public void ExceptionTest()
+    {
+        string tId = "3";
+        IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
 
-    cmd3.Verify(c => c.Execute(), Times.Never());
-}
+
+        var hardStopCmd = new HardStopCommand(IoC.Resolve<ServerThread>("GetThread", tId));
+        var softStopCmd = new SoftStopCommand(tId, IoC.Resolve<ServerThread>("GetThread", tId));
+
+
+        Assert.Throws<Exception>(() => hardStopCmd.Execute());
+        Assert.Throws<Exception>(() => softStopCmd.Execute());
+
+        IoC.Resolve<ICommand>("HardStopThread", tId).Execute();
+
+    }
+
+    [Fact]
+    public void CreateAndStartThreadStrategyTest()
+    {
+        string tId = "4";
+        int count = 0;
+        var act = new Action(() => { count += 1; });
+
+        IoC.Resolve<ICommand>("CreateAndStartThread", tId, act).Execute();
+        var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
+        IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
+        var thread = IoC.Resolve<ServerThread>("GetThread", tId);
+
+        Assert.True(thread.thread.IsAlive);
+        Assert.True(count == 1);
+
+    }
 }

@@ -32,7 +32,7 @@ public class SoftStopCommand : ICommand
         }
         else
         {
-            throw IoC.Resolve<Exception>("SoftStopThreadException");
+            throw IoC.Resolve<Exception>("StopThreadException");
         }
     }
 }
