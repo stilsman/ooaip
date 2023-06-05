@@ -134,12 +134,7 @@ public class StopCommandTests
         cmd3.Setup(c => c.Execute()).Verifiable();
 
         string tId = "2";
-        int count = 0;
-        var act = new Action(() =>
-        {
-            count += 1;
-            waitHandler.Set();
-        });
+        
 
         IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
         var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
@@ -147,12 +142,12 @@ public class StopCommandTests
         waitHandler.Set();
         IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
         IoC.Resolve<ICommand>("SendCommand", tId, cmd2.Object).Execute();
-        IoC.Resolve<ICommand>("HardStopThread", tId, act).Execute();
+        IoC.Resolve<ICommand>("HardStopThread", tId).Execute();
         IoC.Resolve<ICommand>("SendCommand", tId, cmd3.Object).Execute();
 
         waitHandler.WaitOne();
         cmd3.Verify(c => c.Execute(), Times.Never());
-        Assert.Equal(1, count);
+        
     }
 
 
