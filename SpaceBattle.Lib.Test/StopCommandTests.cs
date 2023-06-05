@@ -6,13 +6,13 @@ using Moq;
 
 namespace SpaceBattle.Lib.Test;
 
-public class SoftStopCommandStrategyTests
+public class StopCommandTests
 {
     Dictionary<string, ServerThread> dictThread;
     Dictionary<string, IReceiver> dictReceiver;
     Dictionary<string, ISender> dictSender;
 
-    public SoftStopCommandStrategyTests()
+    public StopCommandTests()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
         this.dictThread = new Dictionary<string, ServerThread>();
@@ -36,8 +36,6 @@ public class SoftStopCommandStrategyTests
         {
             var scope = IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root")));
             scope.Execute();
-            //dictSenders.Add(tId, new Mock<ISender>().Object);
-
 
             var getDictThreadsStrategy = new Mock<IStrategy>();
             getDictThreadsStrategy.Setup(s => s.RunStrategy(It.IsAny<object[]>())).Returns((object[] args) => this.dictThreads);
