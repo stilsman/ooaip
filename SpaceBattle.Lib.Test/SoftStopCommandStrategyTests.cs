@@ -98,7 +98,7 @@ public class SoftStopCommandStrategyTests
     }
 
     [Fact]
-    public void SoftStopCommandStrategyWithoutActionTests()
+    public void SoftStopCommandTests()
     {
         ManualResetEvent waitHandler = new ManualResetEvent(false);
         string tId = "1";
