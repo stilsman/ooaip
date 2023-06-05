@@ -124,7 +124,7 @@ public class StopCommandTests
     [Fact]
     public void HardStopCommandTest()
     {
-        ManualResetEvent waitHandler = new ManualResetEvent(false);
+        AutoResetEvent waitHandler = new AutoResetEvent(false);
 
         var cmd1 = new Mock<ICommand>();
         cmd1.Setup(c => c.Execute()).Verifiable();
@@ -134,7 +134,7 @@ public class StopCommandTests
         cmd3.Setup(c => c.Execute()).Verifiable();
 
         string tId = "2";
-        var count = 0;
+        int count = 0;
         var act = new Action(() =>
         {
             count += 1;
@@ -150,7 +150,7 @@ public class StopCommandTests
         IoC.Resolve<ICommand>("HardStopThread", tId, act).Execute();
         IoC.Resolve<ICommand>("SendCommand", tId, cmd3.Object).Execute();
 
-        waitHandler.WaitOne(200);
+        waitHandler.WaitOne();
         cmd3.Verify(c => c.Execute(), Times.Never());
         Assert.Equal(1, count);
     }
