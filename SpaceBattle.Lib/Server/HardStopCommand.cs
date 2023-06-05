@@ -11,6 +11,7 @@ public class HardStopCommand : ICommand
 
     public void Execute()
     {
+        
         if (Thread.CurrentThread == stoppingThread.thread)
         {
             stoppingThread.Stop();

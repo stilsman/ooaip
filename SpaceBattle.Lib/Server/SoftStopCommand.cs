@@ -23,9 +23,9 @@ public class SoftStopCommand : ICommand
                 }
                 else
                 {
-                    stoppingThread.HandleCommand();
-                    // var cmd = receiver.Receive();
-                    // cmd.Execute();
+                    //stoppingThread.HandleCommand();
+                    var cmd = receiver.Receive();
+                    cmd.Execute();
                 }
 
             }).Execute();
