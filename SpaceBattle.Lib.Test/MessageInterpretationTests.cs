@@ -6,7 +6,7 @@ using Hwdtech.Ioc;
 using System.Collections.Generic;
 
 public class MessageInterpretationTests
-{   
+{
     bool startMoveSent = false;
     bool propertiesWereSet = false;
     bool objectWasGet = false;
@@ -19,25 +19,25 @@ public class MessageInterpretationTests
 
         IoC.Resolve<ICommand>("IoC.Register", "SendCommand", (object[] args) =>
         {
-            return new ActionCommand( () => {commandsWereSent=true;});
+            return new ActionCommand(() => { commandsWereSent = true; });
         }).Execute();
-        
+
         IoC.Resolve<ICommand>("IoC.Register", "Command.StartMovement", (object[] args) =>
         {
-            startMoveSent=true;
+            startMoveSent = true;
             return new CommandForStartMovement();
         }).Execute();
 
         IoC.Resolve<ICommand>("IoC.Register", "GetObjectById", (object[] args) =>
         {
-            objectWasGet=true;
+            objectWasGet = true;
             var obj = new Mock<IUObject>();
             return obj.Object;
         }).Execute();
 
         IoC.Resolve<ICommand>("IoC.Register", "SetPropertiesCommand", (object[] args) =>
         {
-            return new ActionCommand( () => {propertiesWereSet=true;});
+            return new ActionCommand(() => { propertiesWereSet = true; });
         }).Execute();
 
 
@@ -46,8 +46,6 @@ public class MessageInterpretationTests
     public void Test_CreateInterpretationCommand()
     {
         var mockMessage = new Mock<IMessage>();
-
-
 
 
         mockMessage.SetupGet(m => m.type).Returns("StartMovement");
