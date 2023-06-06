@@ -25,7 +25,11 @@ public class MessageInterpretationTests
         IoC.Resolve<ICommand>("IoC.Register", "Command.StartMovement", (object[] args) =>
         {
             startMoveSent = true;
-            return new CommandForStartMovement();
+
+            var m = new Mock<IMoveCommandStartable>();
+            m.SetupGet(a => a.UObject).Returns(new Mock<IUObject>().Object).Verifiable();
+            m.SetupGet(a => a.dict).Returns(new Dictionary<string, object>() { { "speed", new Vector(It.IsAny<int>(), It.IsAny<int>()) } }).Verifiable();
+            return new StartMoveCommand(m.Object);
         }).Execute();
 
         IoC.Resolve<ICommand>("IoC.Register", "GetObjectById", (object[] args) =>
@@ -43,7 +47,7 @@ public class MessageInterpretationTests
 
     }
     [Fact]
-    public void Test_CreateInterpretationCommand()
+    public void InterpretationCommandTests()
     {
         var mockMessage = new Mock<IMessage>();
 
