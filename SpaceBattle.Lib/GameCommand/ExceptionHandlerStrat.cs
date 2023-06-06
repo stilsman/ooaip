@@ -2,7 +2,7 @@ using Hwdtech;
 
 namespace SpaceBattle.Lib;
 
-public class ExceptionHandlerStrategy : IStrategy
+public class ExceptionHandlerStrat : IStrategy
 {
     public object RunStrategy(params object[] args)
     {

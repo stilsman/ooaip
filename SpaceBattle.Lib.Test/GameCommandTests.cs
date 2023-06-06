@@ -32,7 +32,7 @@ public class GameCommandTests
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.NotFoundCommandSubTree", (object[] args) => {
             return exceptionNotFoundCommand;
         }).Execute();
-        
+
         exceptionNotFoundExcepetion.Setup(x => x.RunStrategy()).Verifiable();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.NotFoundExceptionHandler", (object[] args) => {
             return exceptionNotFoundExcepetion.Object;
@@ -42,7 +42,7 @@ public class GameCommandTests
             ICommand cmd = (ICommand)args[0];
             Exception exc = (Exception)args[1];
 
-            var exceptionHadler = new ExceptionHandlerStrategy().RunStrategy(cmd, exc);
+            var exceptionHadler = new ExceptionHandlerStrat().RunStrategy(cmd, exc);
 
             return exceptionHadler;
         }).Execute();
