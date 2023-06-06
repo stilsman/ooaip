@@ -16,6 +16,6 @@ public class CreateNewGameStrategy : IStrategy
         Dictionary<string, Queue<ICommand>> gamesDictionary = IoC.Resolve<Dictionary<string, Queue<ICommand>>>("Game.Get.GamesDictioanary");
         gamesDictionary.Add(gameId, commandQueue);
 
-        return new GameCommand(gameId);
+        return new GameCommand(scope, receiver);
     }
 }
