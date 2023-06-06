@@ -25,12 +25,12 @@ public class CreateAndStartThreadStrategy : IStrategy
 
             if (action != null)
             {   
-                var command = new ActionCommand(action);
+                var command = new ActionComand(action);
                 IoC.Resolve<ICommand>("SendCommand", id, command);
                 command.Execute();
             }
         };
 
-        return new ActionCommand(act);
+        return new ActionComand(act);
     }
 }

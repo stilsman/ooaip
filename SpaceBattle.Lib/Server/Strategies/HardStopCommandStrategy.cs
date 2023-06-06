@@ -22,7 +22,7 @@ public class HardStopCommandStrategy : IStrategy
             if (action != null)
                 action();
         };
-        ICommand returnCmd = IoC.Resolve<ICommand>("SendCommand", id, new ActionCommand(act));
+        ICommand returnCmd = IoC.Resolve<ICommand>("SendCommand", id, new ActionComand(act));
         return returnCmd;
     }
 }

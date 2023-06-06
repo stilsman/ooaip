@@ -1,10 +1,10 @@
 namespace SpaceBattle.Lib;
 
-public class ActionCommand : ICommand
+public class ActionComand : ICommand
 {
     Action action;
 
-    public ActionCommand(Action act)
+    public ActionComand(Action act)
     {
         this.action = act;
     }

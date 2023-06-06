@@ -12,6 +12,6 @@ public class SendCommandStrategy : IStrategy
         {
             sender.Send(commands);
         };
-        return new ActionCommand(action);
+        return new ActionComand(action);
     }
 }
