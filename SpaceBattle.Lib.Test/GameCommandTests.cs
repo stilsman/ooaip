@@ -32,6 +32,7 @@ public class GameCommandTests
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.NotFoundCommandSubTree", (object[] args) => {
             return exceptionNotFoundCommand;
         }).Execute();
+        
         exceptionNotFoundExcepetion.Setup(x => x.RunStrategy()).Verifiable();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.NotFoundExceptionHandler", (object[] args) => {
             return exceptionNotFoundExcepetion.Object;
