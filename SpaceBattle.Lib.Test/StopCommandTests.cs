@@ -180,6 +180,5 @@ public class StopCommandTests
         Assert.Throws<Exception>(() => softStopCmd.Execute());
 
         IoC.Resolve<ICommand>("HardStopThread", tId).Execute();
-
     }
 }
