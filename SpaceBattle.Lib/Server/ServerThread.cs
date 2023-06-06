@@ -11,7 +11,6 @@ public class ServerThread
     public ServerThread(IReceiver queue)
     {
         this.queue = queue;
-        //strategy = () => HandleCommand();
         strategy = () =>
         {
             HandleCommand();
@@ -27,15 +26,8 @@ public class ServerThread
     internal void HandleCommand()
     {
         var cmd = queue.Receive();
-        try
-        {
-            cmd.Execute();
-        }
-        catch (Exception exc)
-        {
-            IoC.Resolve<ICommand>("ExceptionHandler", exc, cmd).Execute();
-        }
 
+        cmd.Execute();
     }
 
     internal void UpdateBehaviour(Action newBehaviour)
