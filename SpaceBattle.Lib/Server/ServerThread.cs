@@ -46,10 +46,6 @@ public class ServerThread
     {
         stop = true;
     }
-    public bool IsStop()
-    {
-        return stop;
-    }
     public void Execute()
     {
         thread.Start();
