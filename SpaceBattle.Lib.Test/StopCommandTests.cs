@@ -96,7 +96,6 @@ public class StopCommandTests
 
             var sendCmdStrategy = new SendCommandStrategy();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "SendCommand", (object[] args) => sendCmdStrategy.RunStrategy(args)).Execute();
-
         }
     }
 
