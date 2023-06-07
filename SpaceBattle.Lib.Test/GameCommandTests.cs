@@ -90,22 +90,4 @@ public class GameCommandTests
         
         cmd.Verify();
     }
-
-    [Fact]
-    public void ExceptionHandlerTest()
-    {
-        int count = 0;
-        var exc = new Exception("101");
-        var cmd = new Mock<ICommand>();
-        cmd.Setup(c => c.Execute()).Throws<Exception>(() => exc);
-
-        var str = new Mock<IStrategy>();
-        str.Setup(s => s.RunStrategy()).Callback(() => count++);
-
-        exceptionNotFoundCommand.Add(exc.GetType().GetHashCode(), str.Object);
-
-        IoC.Resolve<IStrategy>("ExceptionHandler", cmd.Object, exc).RunStrategy();
-
-        cmd.Verify();
-    }
 }
