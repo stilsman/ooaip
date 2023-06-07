@@ -3,7 +3,6 @@ using Hwdtech.Ioc;
 using System.Collections.Concurrent;
 using Xunit;
 using Moq;
-
 namespace SpaceBattle.Lib.Test;
 
 public class HardStopCommandStrategyTests
@@ -95,9 +94,10 @@ public class HardStopCommandStrategyTests
         }
     }
     [Fact]
-    public void HardStopCommandTest()
+    public void HardStopCommandStrategyWithoutActionTest()
     {
-        AutoResetEvent waitHandler = new AutoResetEvent(false);
+
+        AutoResetEvent mre = new AutoResetEvent(false);
 
         var cmd1 = new Mock<ICommand>();
         cmd1.Setup(c => c.Execute()).Verifiable();
@@ -106,21 +106,52 @@ public class HardStopCommandStrategyTests
         var cmd3 = new Mock<ICommand>();
         cmd3.Setup(c => c.Execute()).Verifiable();
 
-        string tId = "2";
+        IoC.Resolve<ICommand>("CreateAndStartThread", "3").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "3", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
+        mre.Set();
+        IoC.Resolve<ICommand>("SendCommand", "3", cmd1.Object).Execute();
+        IoC.Resolve<ICommand>("SendCommand", "3", cmd2.Object).Execute();
+        IoC.Resolve<ICommand>("HardStopThread", "3").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "3", cmd3.Object).Execute();
 
-        IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
-        var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
-        IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
-        waitHandler.Set();
-        IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
-        IoC.Resolve<ICommand>("SendCommand", tId, cmd2.Object).Execute();
-        IoC.Resolve<ICommand>("HardStopThread", tId).Execute();
-        IoC.Resolve<ICommand>("SendCommand", tId, cmd3.Object).Execute();
-
-        waitHandler.WaitOne();
+        mre.WaitOne();
         cmd3.Verify(c => c.Execute(), Times.Never());
 
     }
 
+    [Fact]
+    public void HardStopCommandStrategyWithActionTest()
+    {
+        AutoResetEvent mre = new AutoResetEvent(false);
+
+        var cmd1 = new Mock<ICommand>();
+        cmd1.Setup(c => c.Execute()).Verifiable();
+        var cmd2 = new Mock<ICommand>();
+        cmd2.Setup(c => c.Execute()).Verifiable();
+        var cmd3 = new Mock<ICommand>();
+        cmd3.Setup(c => c.Execute()).Verifiable();
+
+        int count = 0;
+        var act = new Action(() =>
+        {
+            count += 1;
+            mre.Set();
+        });
+
+        IoC.Resolve<ICommand>("CreateAndStartThread", "4").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "4", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
+
+
+        IoC.Resolve<ICommand>("SendCommand", "4", cmd1.Object).Execute();
+        IoC.Resolve<ICommand>("SendCommand", "4", cmd2.Object).Execute();
+        IoC.Resolve<ICommand>("HardStopThread", "4", act).Execute();
+        IoC.Resolve<ICommand>("SendCommand", "4", cmd3.Object).Execute();
+
+        mre.WaitOne();
+        cmd3.Verify(c => c.Execute(), Times.Never());
+
+        Assert.Equal(1, count);
+
+    }
 
 }

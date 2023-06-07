@@ -3,7 +3,6 @@ using Hwdtech.Ioc;
 using System.Collections.Concurrent;
 using Xunit;
 using Moq;
-
 namespace SpaceBattle.Lib.Test;
 
 public class CreateAndStartThreadStrategyTests
@@ -96,18 +95,41 @@ public class CreateAndStartThreadStrategyTests
     }
 
     [Fact]
-    public void CreateAndStartThreadStrategyTest()
+    public void CreateAndStartThreadStrategyWithoutActionTest()
     {
-        string tId = "3";
+
+        var CAST = IoC.Resolve<ICommand>("CreateAndStartThread", "1");
+        CAST.Execute();
+
+        IoC.Resolve<ICommand>("SendCommand", "1", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
+
+        var thread = IoC.Resolve<ServerThread>("GetThread", "1");
+
+        Assert.True(thread.thread.IsAlive);
+
+        IoC.Resolve<ICommand>("HardStopThread", "1").Execute();
+
+    }
+
+    [Fact]
+    public void CreateAndStartThreadStrategyWithActionTest()
+    {
+
         int count = 0;
         var act = new Action(() => { count += 1; });
 
-        IoC.Resolve<ICommand>("CreateAndStartThread", tId, act).Execute();
-        var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
-        IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
-        var thread = IoC.Resolve<ServerThread>("GetThread", tId);
+        var CAST = IoC.Resolve<ICommand>("CreateAndStartThread", "2", act);
+        CAST.Execute();
+
+        IoC.Resolve<ICommand>("SendCommand", "2", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
+
+        var thread = IoC.Resolve<ServerThread>("GetThread", "2");
 
         Assert.True(thread.thread.IsAlive);
         Assert.True(count == 1);
+
+
+        IoC.Resolve<ICommand>("HardStopThread", "2").Execute();
+
     }
 }

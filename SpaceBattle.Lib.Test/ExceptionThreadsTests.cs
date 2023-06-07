@@ -3,7 +3,6 @@ using Hwdtech.Ioc;
 using System.Collections.Concurrent;
 using Xunit;
 using Moq;
-
 namespace SpaceBattle.Lib.Test;
 
 public class ExceptionThreadsTests
@@ -102,19 +101,19 @@ public class ExceptionThreadsTests
     }
 
     [Fact]
-    public void ExceptionTest()
+    public void HardAndSoftStopThrowsExceptionTest()
     {
-        string tId = "4";
-        IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
+        IoC.Resolve<ICommand>("CreateAndStartThread", "8").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "8", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
 
-        var hardStopCmd = new HardStopCommand(IoC.Resolve<ServerThread>("GetThread", tId));
-        var softStopCmd = new SoftStopCommand(tId, IoC.Resolve<ServerThread>("GetThread", tId));
+        var hardStopCmd = new HardStopCommand(IoC.Resolve<ServerThread>("GetThread", "8"));
+        var softStopCmd = new SoftStopCommand("8", IoC.Resolve<ServerThread>("GetThread", "8"));
 
-        var t = IoC.Resolve<ServerThread>("GetThread", tId);
 
         Assert.Throws<Exception>(() => hardStopCmd.Execute());
         Assert.Throws<Exception>(() => softStopCmd.Execute());
 
-        IoC.Resolve<ICommand>("HardStopThread", tId).Execute();
+        IoC.Resolve<ICommand>("HardStopThread", "8").Execute();
+
     }
 }

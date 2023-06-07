@@ -3,7 +3,6 @@ using Hwdtech.Ioc;
 using System.Collections.Concurrent;
 using Xunit;
 using Moq;
-
 namespace SpaceBattle.Lib.Test;
 
 public class SoftStopCommandStrategyTests
@@ -95,23 +94,46 @@ public class SoftStopCommandStrategyTests
         }
     }
     [Fact]
-    public void SoftStopCommandTests()
+    public void SoftStopCommandStrategyWithActionTests()
     {
-        ManualResetEvent waitHandler = new ManualResetEvent(false);
-        string tId = "1";
+        ManualResetEvent mre = new ManualResetEvent(false);
         var cmd1 = new Mock<ICommand>();
-        cmd1.Setup(c => c.Execute()).Callback(() => waitHandler.Set()).Verifiable();
-        IoC.Resolve<ICommand>("CreateAndStartThread", tId).Execute();
-        var st = new ServerThreadDependecies(dictThread, dictReceiver, dictSender);
-        IoC.Resolve<ICommand>("SendCommand", tId, st).Execute();
-        var count = 0;
-        var SSCmd = IoC.Resolve<ICommand>("SoftStopThread", tId, () => { count += 1; });
-        IoC.Resolve<ICommand>("SendCommand", tId, SSCmd).Execute();
-        IoC.Resolve<ICommand>("SendCommand", tId, cmd1.Object).Execute();
+        cmd1.Setup(c => c.Execute()).Callback(() => mre.Set()).Verifiable();
+        IoC.Resolve<ICommand>("CreateAndStartThread", "5").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "5", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
 
-        waitHandler.WaitOne();
-        var rc = IoC.Resolve<IReceiver>("GetReceiver", tId);
+        var count = 0;
+        var SSCmd = IoC.Resolve<ICommand>("SoftStopThread", "5", () => { count += 1; });
+        IoC.Resolve<ICommand>("SendCommand", "5", SSCmd).Execute();
+        IoC.Resolve<ICommand>("SendCommand", "5", cmd1.Object).Execute();
+
+        mre.WaitOne();
+        var rc = IoC.Resolve<IReceiver>("GetReceiver", "5");
         Assert.True(rc.isEmpty());
         Assert.Equal(1, count);
+
+    }
+
+    [Fact]
+    public void SoftStopCommandStrategyWithoutActionTests()
+    {
+        ManualResetEvent mre = new ManualResetEvent(false);
+
+        var cmd1 = new Mock<ICommand>();
+        cmd1.Setup(c => c.Execute()).Callback(() => mre.Set()).Verifiable();
+
+        IoC.Resolve<ICommand>("CreateAndStartThread", "6").Execute();
+        IoC.Resolve<ICommand>("SendCommand", "6", new ServerThreadDependecies(dictThread, dictReceiver, dictSender)).Execute();
+
+        var SSCmd = IoC.Resolve<ICommand>("SoftStopThread", "6");
+        IoC.Resolve<ICommand>("SendCommand", "6", SSCmd).Execute();
+        IoC.Resolve<ICommand>("SendCommand", "6", cmd1.Object).Execute();
+
+        mre.WaitOne();
+        cmd1.Verify(c => c.Execute(), Times.Once());
+
+        var receiver = IoC.Resolve<IReceiver>("GetReceiver", "6");
+        Assert.True(receiver.isEmpty());
+
     }
 }
