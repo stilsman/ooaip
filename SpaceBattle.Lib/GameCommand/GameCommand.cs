@@ -1,42 +1,36 @@
 using Hwdtech;
 using System.Diagnostics;
-
 namespace SpaceBattle.Lib;
 
 public class GameCommand : ICommand
 {
-    private IReceiver receiver;
-    private object scope;
-    private Stopwatch time;
-
-    public GameCommand(object scope, IReceiver receiver)
+    string gameID;
+    public GameCommand(string gameID)
     {
-        this.scope = scope;
-        this.receiver = receiver;
-        time = new Stopwatch();
+        this.gameID = gameID;
     }
+
     public void Execute()
     {
+        var scope = IoC.Resolve<object>("GetScope", this.gameID);
         IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", scope).Execute();
-        var gameTick = IoC.Resolve<int>("Game.GetTick");
-        time.Start();
-        while (time.ElapsedMilliseconds <= gameTick)
+        var queue = IoC.Resolve<IReceiver>("GetReceiver", this.gameID);
+        var timeQuant = IoC.Resolve<TimeSpan>("GetTime", this.gameID);
+        var sw = Stopwatch.StartNew();
+
+        while (sw.Elapsed < timeQuant)
         {
-            if (!receiver.isEmpty())
+            if (!queue.isEmpty())
             {
-                var cmd = this.receiver.Receive();
+                var cmd = queue.Receive();
                 try
                 {
                     cmd.Execute();
                 }
-                catch (Exception err)
+                catch (Exception e)
                 {
-                    var exceptinHandlerStrategy = IoC.Resolve<IStrategy>("Exception.FindHandlerStrategy", cmd, err);
-                    exceptinHandlerStrategy.RunStrategy();
+                    IoC.Resolve<IStrategy>("ExceptionHandler", cmd, e).RunStrategy();
                 }
             }
-            else break;
         }
-        time.Reset();
     }
-}
